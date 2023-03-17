@@ -1,0 +1,10 @@
+We considered using linear regression which gave us an acceptable R-squared score of 0.16 but 
+we dropped this model because ridge regression was a significant imporvement probably because the
+basic linear model was overfitting the data.
+
+We also considered using polynomial regression but this only gave us a good correlation between 
+IMDB rating and total number of votes and there didn't seem to be a strong quadratic relationship 
+with any other features. Additionally we attempted to apply the ridge method to the polynomial 
+regression to see if it would help as it did with the linear model but there was little imporvement 
+and all of the polynomial models had poor R-squared scores. As discussed we decided to drop total 
+number of votes and the polynomial models were not useful after that. 

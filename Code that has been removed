@@ -1,0 +1,103 @@
+#Linear Regression 
+
+
+'''X = np.c_[X_train.bmi, 
+          X_train.age,
+          X_train.children,
+          X_train.sex_female,
+          X_train.smoker_yes
+          ]'''
+
+linreg = make_pipeline(
+    StandardScaler(),
+    LinearRegression()
+)
+lm = linreg.fit(X_train, y_train)
+beta = get_coefs(lm)
+print(beta)
+
+model_fit(lm, X_test, y_test, plot = True)
+
+get_impt_features(lm, X_train, 15)
+
+#Trying out total votes as a dependent variable 
+#We maybe should remove this and just describe that we tried it but model performance wasn't any better than
+# This might not work out because rating has higher correlation with more variables
+
+#Creating feature and response arrays  
+tvX_scaled = np.delete(X_scaled, 1, 1) #object = 1, axis = 1
+tv = X_scaled[:,1]
+
+#Splitting into training and testing sets 
+tvX_train, tvX_test, tvy_train, tvy_test = train_test_split(tvX_scaled, tv, test_size = 0.3, random_state = 42)
+
+linreg = LinearRegression()
+lmtv = linreg.fit(tvX_train, tvy_train)
+
+model_fit(lmtv, tvX_test, tvy_test, plot = True)
+
+#I think something is still wrong with the model but hopefully when we fix it above it'll carry through
+
+Polynomial Regression
+
+#Polynomial regression model
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.pipeline import make_pipeline
+
+poly_model = make_pipeline(
+    PolynomialFeatures(degree = 3),
+    LinearRegression()
+)
+
+print(poly_model)
+
+poly_reg = poly_model.fit(X_train, y_train)
+
+#Degree 3 Polynomial Regression
+model_fit(poly_reg, X_test, y_test, plot=True)
+#Degree 2 Polynomial is even worse with R^2 -0.381
+get_impt_features(poly_reg, X_train, 15)
+
+print(poly_reg.steps[1][1].intercept_) # second subset is necessary here because 
+                                       # each step is a tuple of a name and the 
+                                       # model / transform o
+                                       
+                                       
+model_fit(poly_reg, X_test, y_test, plot=True)
+
+#Polynomial Ridge Regression
+a = 0.1
+
+poly_ridge = make_pipeline(
+    PolynomialFeatures(degree = 2),
+    StandardScaler(),
+    Ridge(alpha = a)
+)
+
+poly_ridge.fit(X_train, y_train)
+#Ploynomial Ridge Regression
+model_fit(poly_ridge, X_test, y_test, plot=True)
+get_impt_features(poly_ridge, X_train, 30)
+
+#Tuning Alpha for Polynomial Ridge Regression
+alphas = np.linspace(0, 60, num=200)
+
+gs = GridSearchCV(
+    make_pipeline(
+        PolynomialFeatures(degree = 2),
+        StandardScaler(),
+        Ridge()
+    ),
+    param_grid = {'ridge__alpha': alphas},
+    cv = KFold(5, shuffle = True, random_state = 42),
+    scoring = "neg_mean_squared_error"
+)
+
+gs.fit(X_train, y_train)
+print(gs.best_params_)
+model_fit(gs.best_estimator_, X_test, y_test, plot=True)
+
+poly_ridge_coefs = get_coefs(poly_ridge)
+
+quadratic is good, cubic is worse. could do a plot of degree against 
+an accuracy metric or cross validation to show that quadratic is the right choice.

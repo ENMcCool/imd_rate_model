@@ -1,0 +1,14 @@
+## 1. Introduction
+
+*This section should include a brief introduction to the task and the data (assume this is a report you are delivering to a client).* 
+
+- If you use any additional data sources, you should introduce them here and discuss why they were included.
+
+- Briefly outline the approaches being used and the conclusions that you are able to draw.
+
+
+
+
+In this report we outline the machine learning techinques we used to gain insight into which are the most important factors for an episode of the office to have a 'good' imdb rating. By 'good' we mean factors that by their inclusion/omission resulted in the greatest possible increases in imdb rating. We focused on factors that were actionable, as if a factor was a good indicator of score, but out of the production teams control, they will have not gained insight from this analysis. 
+
+Using the provided office database, which contains many features of an episode such as date, director, writing, air-date, main characters and many more, we reduced the number of factors by removing correlated features, as well processed some of the data to input it into more useful factors. Then when exploring the possible machine learning apporaches we first used just linear regression to use as a baseline to compare to, and then explored 3 possible approaches that could improve upon it. We looked at a ridge rigression, polynomial regression, and a polynomial-ridge regression. We found that the ridge regression was the most effective and we used this to guide our recommendations. We then used our model to examine which factors had the biggest impact on the overall rating of the episode, we found these were. 
